@@ -1,0 +1,25 @@
+# IntelliJ IDEA specific files
+/.idea/
+/*.iml
+/out/
+shelf/
+workspace.xml
+
+# Maven specific files
+/target/
+*.log
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Java specific files
+*.class
+*.jar
+*.war
+*.ear
+
+# Spring Boot specific files
+*.properties
+*.yml
+*.yaml
