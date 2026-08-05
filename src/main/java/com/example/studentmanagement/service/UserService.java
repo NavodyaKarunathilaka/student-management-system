@@ -39,29 +39,17 @@ public class UserService {
     // Login User
     public LoginResponse login(LoginRequest loginRequest) {
 
-        System.out.println("========== LOGIN START ==========");
-        System.out.println("Email Received : " + loginRequest.getEmail());
-
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        System.out.println("User Found : " + user.getEmail());
-        System.out.println("Stored Password : " + user.getPassword());
-        System.out.println("Entered Password : " + loginRequest.getPassword());
-
         // Compare entered password with encrypted password
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            System.out.println("Password does not match!");
             throw new RuntimeException("Invalid password");
         }
-
-        System.out.println("Password matched successfully.");
 
         // Generate JWT Token
         String token = jwtService.generateToken(user.getEmail());
 
-        System.out.println("Generated JWT : " + token);
-        System.out.println("========== LOGIN END ==========");
 
         return new LoginResponse(
                 token,

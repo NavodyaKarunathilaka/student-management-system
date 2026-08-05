@@ -1,11 +1,26 @@
 package com.example.studentmanagement.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
+// This DTO represents a student with fields for id, name, email, age, and course ID.
+// It includes validation annotations to ensure data integrity.
 public class StudentDTO {
 
     private Long id;
+
+    @NotBlank(message = "Name is mandatory")
     private String name;
+
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email is mandatory")
     private String email;
+
+    @Min(value = 18, message = "Age must be at least 18")
     private Integer age;
+
+    @Min(value = 1, message = "Course ID must be a positive number")
     private Long courseId;
 
     public StudentDTO() {

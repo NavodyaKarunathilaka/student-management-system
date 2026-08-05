@@ -1,5 +1,7 @@
 package com.example.studentmanagement.dto;
 
+// This DTO represents the request payload for a login operation.
+// It contains fields for email and password.
 public class LoginRequest {
 
     private String email;

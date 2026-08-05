@@ -1,5 +1,9 @@
 package com.example.studentmanagement.dto;
 
+/**
+ * This DTO represents the response returned after a successful login.
+ * It contains fields for token, role, and email.
+ */
 public class LoginResponse {
 
     private String token;

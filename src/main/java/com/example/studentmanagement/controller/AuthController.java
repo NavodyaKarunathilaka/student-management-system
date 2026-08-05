@@ -18,6 +18,12 @@ public class AuthController {
         this.userService = userService;
     }
 
+    /**
+     * Handles user registration.
+     *
+     * @param user the user to register
+     * @return a response indicating the result of the registration
+     */
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
 
@@ -26,6 +32,12 @@ public class AuthController {
         return ResponseEntity.ok("User registered successfully");
     }
 
+    /**
+     * Handles user login.
+     *
+     * @param loginRequest the login credentials
+     * @return a response containing the JWT token if login is successful
+     */
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
             @Valid @RequestBody LoginRequest loginRequest) {
