@@ -49,8 +49,7 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.of("Student updated successfully", response));
     }
 
-    // Enrolls an existing student into a course, replacing any current enrollment.
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PostMapping("/{id}/enroll")
     public ResponseEntity<ApiResponse<EnrollmentResponse>> enrollStudent(
             @PathVariable Long id,
