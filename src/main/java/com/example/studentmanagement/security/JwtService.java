@@ -1,8 +1,10 @@
 package com.example.studentmanagement.security;
 
+import com.example.studentmanagement.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -12,19 +14,23 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY =
-            "studentmanagementsystemsecretkey123456789012345678901234";
+    private final SecretKey key;
+    private final long expirationMs;
 
-    private final SecretKey key =
-            Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    public JwtService(@Value("${jwt.secret}") String secret,
+                      @Value("${jwt.expiration-ms}") long expirationMs) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.expirationMs = expirationMs;
+    }
 
     // Generate JWT Token
-    public String generateToken(String email) {
+    public String generateToken(String email, Role role) {
 
         return Jwts.builder()
                 .subject(email)
+                .claim("role", role.name())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .expiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(key)
                 .compact();
     }
@@ -32,6 +38,11 @@ public class JwtService {
     // Extract Username
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    // Extract Role
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
     // Extract Expiration

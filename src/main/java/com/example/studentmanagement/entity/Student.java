@@ -26,4 +26,8 @@ public class Student {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

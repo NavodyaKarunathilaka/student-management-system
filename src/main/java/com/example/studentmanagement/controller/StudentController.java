@@ -1,6 +1,10 @@
 package com.example.studentmanagement.controller;
 
-import com.example.studentmanagement.dto.StudentDTO;
+import com.example.studentmanagement.dto.ApiResponse;
+import com.example.studentmanagement.dto.EnrollmentRequest;
+import com.example.studentmanagement.dto.EnrollmentResponse;
+import com.example.studentmanagement.dto.StudentRequest;
+import com.example.studentmanagement.dto.StudentResponse;
 import com.example.studentmanagement.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -19,40 +23,50 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    // Creates a new student.
-    @PostMapping
-    public ResponseEntity<StudentDTO> createStudent(@Valid @RequestBody StudentDTO studentDTO) {
-        return ResponseEntity.ok(studentService.createStudent(studentDTO));
-    }
-
     // Retrieves all students.
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> getAllStudents() {
-        return ResponseEntity.ok(studentService.getAllStudents());
+    public ResponseEntity<ApiResponse<List<StudentResponse>>> getAllStudents() {
+        List<StudentResponse> response = studentService.getAllStudents();
+        return ResponseEntity.ok(ApiResponse.of("Students retrieved successfully", response));
     }
 
     // Retrieves a student by their ID.
     @GetMapping("/{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.getStudentById(id));
+    public ResponseEntity<ApiResponse<StudentResponse>> getStudentById(@PathVariable Long id) {
+        StudentResponse response = studentService.getStudentById(id);
+        return ResponseEntity.ok(ApiResponse.of("Student retrieved successfully", response));
     }
 
-    // Updates an existing student.
+    // Updates a student's profile fields (name/email/age). Course enrollment is managed via /enroll.
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDTO> updateStudent(
+    public ResponseEntity<ApiResponse<StudentResponse>> updateStudent(
             @PathVariable Long id,
-            @Valid @RequestBody StudentDTO studentDTO) {
+            @Valid @RequestBody StudentRequest studentRequest) {
 
-        return ResponseEntity.ok(studentService.updateStudent(id, studentDTO));
+        StudentResponse response = studentService.updateStudent(id, studentRequest);
+        return ResponseEntity.ok(ApiResponse.of("Student updated successfully", response));
+    }
+
+    // Enrolls an existing student into a course, replacing any current enrollment.
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{id}/enroll")
+    public ResponseEntity<ApiResponse<EnrollmentResponse>> enrollStudent(
+            @PathVariable Long id,
+            @Valid @RequestBody EnrollmentRequest enrollmentRequest) {
+
+        EnrollmentResponse response = studentService.enrollStudent(id, enrollmentRequest);
+        return ResponseEntity.ok(ApiResponse.of("Student enrolled successfully", response));
     }
 
     // Deletes a student by their ID.
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteStudent(@PathVariable Long id) {
 
         studentService.deleteStudent(id);
 
-        return ResponseEntity.ok("Student deleted successfully");
+        return ResponseEntity.ok(ApiResponse.of("Student deleted successfully"));
     }
 }

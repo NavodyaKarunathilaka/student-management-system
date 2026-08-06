@@ -1,7 +1,10 @@
 package com.example.studentmanagement.controller;
 
-import com.example.studentmanagement.dto.CourseDTO;
+import com.example.studentmanagement.dto.ApiResponse;
+import com.example.studentmanagement.dto.CourseRequest;
+import com.example.studentmanagement.dto.CourseResponse;
 import com.example.studentmanagement.service.CourseService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,43 +26,49 @@ public class CourseController {
     // It provides endpoints for creating, retrieving, updating, and deleting courses.
 
     // Create Course
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<CourseDTO> createCourse(@Valid @RequestBody CourseDTO courseDTO) {
+    public ResponseEntity<ApiResponse<CourseResponse>> createCourse(@Valid @RequestBody CourseRequest courseRequest) {
         // Creates a new course.
-        return ResponseEntity.ok(courseService.createCourse(courseDTO));
+        CourseResponse response = courseService.createCourse(courseRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.of("Course created successfully", response));
     }
 
     // Get All Courses
     @GetMapping
-    public ResponseEntity<List<CourseDTO>> getAllCourses() {
+    public ResponseEntity<ApiResponse<List<CourseResponse>>> getAllCourses() {
         // Retrieves all courses.
-        return ResponseEntity.ok(courseService.getAllCourses());
+        List<CourseResponse> response = courseService.getAllCourses();
+        return ResponseEntity.ok(ApiResponse.of("Courses retrieved successfully", response));
     }
 
     // Get Course By ID
     @GetMapping("/{id}")
-    public ResponseEntity<CourseDTO> getCourseById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<CourseResponse>> getCourseById(@PathVariable Long id) {
         // Retrieves a course by its ID.
-        return ResponseEntity.ok(courseService.getCourseById(id));
+        CourseResponse response = courseService.getCourseById(id);
+        return ResponseEntity.ok(ApiResponse.of("Course retrieved successfully", response));
     }
 
     // Update Course
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<CourseDTO> updateCourse(
+    public ResponseEntity<ApiResponse<CourseResponse>> updateCourse(
             @PathVariable Long id,
-            @Valid @RequestBody CourseDTO courseDTO) {
+            @Valid @RequestBody CourseRequest courseRequest) {
         // Updates an existing course.
-        return ResponseEntity.ok(courseService.updateCourse(id, courseDTO));
+        CourseResponse response = courseService.updateCourse(id, courseRequest);
+        return ResponseEntity.ok(ApiResponse.of("Course updated successfully", response));
     }
 
     // Delete Course
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCourse(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteCourse(@PathVariable Long id) {
         // Deletes a course by its ID.
         courseService.deleteCourse(id);
 
-        return ResponseEntity.ok("Course deleted successfully");
+        return ResponseEntity.ok(ApiResponse.of("Course deleted successfully"));
     }
 
 }

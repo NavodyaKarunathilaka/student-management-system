@@ -1,10 +1,12 @@
 package com.example.studentmanagement.controller;
 
+import com.example.studentmanagement.dto.ApiResponse;
 import com.example.studentmanagement.dto.LoginRequest;
 import com.example.studentmanagement.dto.LoginResponse;
-import com.example.studentmanagement.entity.User;
+import com.example.studentmanagement.dto.RegisterRequest;
 import com.example.studentmanagement.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,15 +23,15 @@ public class AuthController {
     /**
      * Handles user registration.
      *
-     * @param user the user to register
+     * @param request the registration details
      * @return a response indicating the result of the registration
      */
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
+    public ResponseEntity<ApiResponse<Void>> register(@Valid @RequestBody RegisterRequest request) {
 
-        userService.register(user);
+        userService.register(request);
 
-        return ResponseEntity.ok("User registered successfully");
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.of("User registered successfully"));
     }
 
     /**
@@ -39,12 +41,12 @@ public class AuthController {
      * @return a response containing the JWT token if login is successful
      */
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
+    public ResponseEntity<ApiResponse<LoginResponse>> login(
             @Valid @RequestBody LoginRequest loginRequest) {
 
         LoginResponse response = userService.login(loginRequest);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.of("Login successful", response));
     }
 
 }

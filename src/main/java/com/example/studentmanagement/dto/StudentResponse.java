@@ -5,18 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * This DTO represents the response returned after a successful login.
- * It contains fields for token, role, and email.
- */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
+public class StudentResponse {
 
-    private String token;
-    private String role;
+    private Long id;
+    private String name;
     private String email;
-
+    private Integer age;
+    private Long courseId;
+    private String courseName;
+    private Long userId;
 }

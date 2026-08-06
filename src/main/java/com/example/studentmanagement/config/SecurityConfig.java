@@ -3,15 +3,18 @@ package com.example.studentmanagement.config;
 import com.example.studentmanagement.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpStatus;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     // This class configures the security settings for the application.
@@ -29,7 +32,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll() // Allows unauthenticated access to authentication endpoints.
                         .anyRequest().authenticated() // Requires authentication for all other endpoints.
                 )
-                .httpBasic(Customizer.withDefaults()) // Enables basic HTTP authentication.
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)) // Returns 401 for unauthenticated requests instead of the default 403.
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Adds the JWT authentication filter before the username-password filter.
 
         return http.build();
