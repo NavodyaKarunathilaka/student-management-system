@@ -4,9 +4,11 @@ import com.example.studentmanagement.dto.LoginRequest;
 import com.example.studentmanagement.dto.LoginResponse;
 import com.example.studentmanagement.dto.RegisterRequest;
 import com.example.studentmanagement.entity.Role;
+import com.example.studentmanagement.entity.Student;
 import com.example.studentmanagement.entity.User;
 import com.example.studentmanagement.exception.EmailAlreadyExistsException;
 import com.example.studentmanagement.exception.InvalidCredentialsException;
+import com.example.studentmanagement.repository.StudentRepository;
 import com.example.studentmanagement.repository.UserRepository;
 import com.example.studentmanagement.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,15 +18,17 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final StudentService studentService;
 
-    public UserService(UserRepository userRepository,
+    public UserService(UserRepository userRepository, StudentRepository studentRepository,
                        PasswordEncoder passwordEncoder,
                        JwtService jwtService,
                        StudentService studentService) {
         this.userRepository = userRepository;
+        this.studentRepository = studentRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.studentService = studentService;
@@ -69,10 +73,16 @@ public class UserService {
         // Generate JWT Token
         String token = jwtService.generateToken(user.getEmail(), user.getRole());
 
+        // ADMIN accounts are promoted manually and have no linked student profile.
+        Long studentId = studentRepository.findByUserId(user.getId())
+                .map(Student::getId)
+                .orElse(null);
+
         return new LoginResponse(
                 token,
                 user.getRole().name(),
-                user.getEmail()
+                user.getEmail(),
+                studentId
         );
     }
 }
