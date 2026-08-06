@@ -1,7 +1,7 @@
 package com.example.studentmanagement.service;
 
-import com.example.studentmanagement.dto.CourseRequest;
-import com.example.studentmanagement.dto.CourseResponse;
+import com.example.studentmanagement.dto.request.CourseRequest;
+import com.example.studentmanagement.dto.response.CourseResponse;
 import com.example.studentmanagement.entity.Course;
 import com.example.studentmanagement.exception.ResourceNotFoundException;
 import com.example.studentmanagement.repository.CourseRepository;

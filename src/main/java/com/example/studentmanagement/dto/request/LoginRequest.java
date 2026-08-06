@@ -1,4 +1,4 @@
-package com.example.studentmanagement.dto;
+package com.example.studentmanagement.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

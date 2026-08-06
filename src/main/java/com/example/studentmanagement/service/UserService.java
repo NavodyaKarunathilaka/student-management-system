@@ -1,8 +1,8 @@
 package com.example.studentmanagement.service;
 
-import com.example.studentmanagement.dto.LoginRequest;
-import com.example.studentmanagement.dto.LoginResponse;
-import com.example.studentmanagement.dto.RegisterRequest;
+import com.example.studentmanagement.dto.request.LoginRequest;
+import com.example.studentmanagement.dto.response.LoginResponse;
+import com.example.studentmanagement.dto.request.RegisterRequest;
 import com.example.studentmanagement.entity.Role;
 import com.example.studentmanagement.entity.Student;
 import com.example.studentmanagement.entity.User;

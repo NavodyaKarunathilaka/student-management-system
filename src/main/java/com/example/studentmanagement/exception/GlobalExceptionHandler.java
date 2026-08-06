@@ -1,6 +1,6 @@
 package com.example.studentmanagement.exception;
 
-import com.example.studentmanagement.dto.ApiResponse;
+import com.example.studentmanagement.dto.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

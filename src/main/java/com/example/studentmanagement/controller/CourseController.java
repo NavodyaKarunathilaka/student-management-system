@@ -1,8 +1,8 @@
 package com.example.studentmanagement.controller;
 
-import com.example.studentmanagement.dto.ApiResponse;
-import com.example.studentmanagement.dto.CourseRequest;
-import com.example.studentmanagement.dto.CourseResponse;
+import com.example.studentmanagement.dto.response.ApiResponse;
+import com.example.studentmanagement.dto.request.CourseRequest;
+import com.example.studentmanagement.dto.response.CourseResponse;
 import com.example.studentmanagement.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

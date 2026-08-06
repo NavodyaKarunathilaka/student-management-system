@@ -1,10 +1,10 @@
 package com.example.studentmanagement.controller;
 
-import com.example.studentmanagement.dto.ApiResponse;
-import com.example.studentmanagement.dto.EnrollmentRequest;
-import com.example.studentmanagement.dto.EnrollmentResponse;
-import com.example.studentmanagement.dto.StudentRequest;
-import com.example.studentmanagement.dto.StudentResponse;
+import com.example.studentmanagement.dto.response.ApiResponse;
+import com.example.studentmanagement.dto.request.EnrollmentRequest;
+import com.example.studentmanagement.dto.response.EnrollmentResponse;
+import com.example.studentmanagement.dto.request.StudentRequest;
+import com.example.studentmanagement.dto.response.StudentResponse;
 import com.example.studentmanagement.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

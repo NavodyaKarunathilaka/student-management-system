@@ -1,9 +1,9 @@
 package com.example.studentmanagement.controller;
 
-import com.example.studentmanagement.dto.ApiResponse;
-import com.example.studentmanagement.dto.LoginRequest;
-import com.example.studentmanagement.dto.LoginResponse;
-import com.example.studentmanagement.dto.RegisterRequest;
+import com.example.studentmanagement.dto.response.ApiResponse;
+import com.example.studentmanagement.dto.request.LoginRequest;
+import com.example.studentmanagement.dto.response.LoginResponse;
+import com.example.studentmanagement.dto.request.RegisterRequest;
 import com.example.studentmanagement.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
