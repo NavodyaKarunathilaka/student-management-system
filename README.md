@@ -186,8 +186,8 @@ Example request:
 ```json
 {
   "name": "Admin User",
-  "email": "admin@gmail.com",
-  "password": "123456",
+  "email": "admin@test.com",
+  "password": "AdminPass123!",
   "role": "ADMIN",
   "contactNum": "0771234567"
 }
@@ -205,8 +205,8 @@ Example request:
 
 ```json
 {
-  "email": "admin@gmail.com",
-  "password": "123456"
+  "email": "admin@test.com",
+  "password": "AdminPass123!"
 }
 ```
 
@@ -216,7 +216,7 @@ Example response:
 {
   "token": "JWT_TOKEN",
   "role": "ADMIN",
-  "email": "admin@gmail.com"
+  "email": "admin@test.com"
 }
 ```
 
